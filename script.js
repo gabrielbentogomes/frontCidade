@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const maxTags = 3;
+    const maxTags = 4;
     let selectedTags = [];
 
     // Função para exibir as tags como botões
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const params = new URLSearchParams();
         selectedTags.forEach(tag => params.append('tags', tag));
 
-        fetch(`https://intuitive-strength-production.up.railway.app/api/cities/by-three-tags?${params.toString()}`)
+        fetch(`http://localhost:8080/api/cities/by-three-tags?${params.toString()}`)
             .then(response => response.json())
             .then(city => {
                 // Verifica se a resposta é um objeto
