@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const maxTags = 4;
+    const maxTags = 5;
     let selectedTags = [];
 
     // Função para exibir as tags como botões
@@ -37,12 +37,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         fetch(`https://intuitive-strength-production.up.railway.app/api/cities/by-three-tags?${params.toString()}`)
             .then(response => response.json())
-            .then(city => {
-                // Verifica se a resposta é um objeto
-                if (city && city.name) {
-                    displaySuggestions(city);
+            .then(cities => {
+                // Verifica se a resposta é um array e lida com múltiplas cidades
+                if (Array.isArray(cities)) {
+                    displaySuggestions(cities);
                 } else {
-                    console.error('Resposta inesperada da API:', city);
+                    console.error('Resposta inesperada da API:', cities);
                 }
             })
             .catch(error => {
@@ -50,14 +50,19 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    // Função para exibir a sugestão de cidade
-    function displaySuggestions(city) {
+    // Função para exibir as sugestões de cidades, limitando a 3 por vez
+    function displaySuggestions(cities) {
         const suggestionsList = document.getElementById('suggestions-list');
         suggestionsList.innerHTML = '';
 
-        const listItem = document.createElement('li');
-        listItem.innerHTML = `<h3>${city.name}</h3><p>${city.description}</p><p>Tags: ${city.tags.join(', ')}</p>`;
-        suggestionsList.appendChild(listItem);
+        // Limita a exibição a 3 sugestões
+        const limitedCities = cities.slice(0, 3);
+
+        limitedCities.forEach(city => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `<h3>${city.name}</h3><p>${city.description}</p><p>Tags: ${city.tags.join(', ')}</p>`;
+            suggestionsList.appendChild(listItem);
+        });
     }
 
     // Adiciona um event listener para o botão de busca
