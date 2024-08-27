@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Função para exibir as tags como botões
     function displayTags(tags) {
         const groupContainer = document.getElementById('group1');
+        groupContainer.innerHTML = ''; // Limpa o container antes de adicionar novas tags
         tags.forEach(tag => {
             const button = document.createElement('button');
             button.innerText = tag;
@@ -23,6 +24,23 @@ document.addEventListener('DOMContentLoaded', function() {
             selectedTags.push(tag);
             button.classList.add('selected');
         }
+    }
+
+    // Função para buscar tags disponíveis da API
+    function fetchTags() {
+        fetch('https://intuitive-strength-production.up.railway.app/api/cities/tags')
+            .then(response => response.json())
+            .then(data => {
+                // Acessa a propriedade 'tags' e exibe as tags
+                if (Array.isArray(data.tags)) {
+                    displayTags(data.tags);
+                } else {
+                    console.error('Resposta inesperada da API:', data);
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao buscar tags:', error);
+            });
     }
 
     // Função para buscar cidades com as tags selecionadas
@@ -68,9 +86,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Adiciona um event listener para o botão de busca
     document.getElementById('fetch-cities-button').addEventListener('click', fetchSuggestions);
 
-    // Tags disponíveis
-    const availableTags = ['Histórica', 'Costeira', 'Montanhosa', 'Urbana', 'Rural', 'Cultural', 'Natureza', 'Moderna', 'Praiana', 'Aventura'];
-
-    // Exibe as tags disponíveis inicialmente
-    displayTags(availableTags);
+    // Busca e exibe as tags disponíveis ao carregar a página
+    fetchTags();
 });
