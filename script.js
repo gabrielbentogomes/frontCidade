@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para buscar tags disponíveis da API
     function fetchTags() {
-        fetch('https://intuitive-strength-production.up.railway.app/api/cities/tags')
+        fetch('https://sugestaodestinos-production-04b8.up.railway.app/city/tags')
             .then(response => response.json())
             .then(data => {
                 // Acessa a propriedade 'tags' e exibe as tags
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const params = new URLSearchParams();
         selectedTags.forEach(tag => params.append('tags', tag));
 
-        fetch(`https://intuitive-strength-production.up.railway.app/api/cities/by-three-tags?${params.toString()}`)
+        fetch(`https://sugestaodestinos-production-04b8.up.railway.app/city/bytags?${params.toString()}`)
             .then(response => response.json())
             .then(cities => {
                 // Verifica se a resposta é um array e lida com múltiplas cidades
